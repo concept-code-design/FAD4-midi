@@ -40,11 +40,17 @@ reboot in firmware update mode
 
 programming sliders
 ./midiutil.py -d 1 -w 186 102 42
+
 ./midiutil.py -d 1 -w 186 1 9
+
 ./midiutil.py -d 1 -w 186 2 15
+
 ./midiutil.py -d 1 -w 186 3 21
+
 ./midiutil.py -d 1 -w 186 4 22
+
 ./midiutil.py -d 1 -w 186 102 43
+
 sets slider 1 to CC 9, 2 to 15 etc
 
 ## Links & References
