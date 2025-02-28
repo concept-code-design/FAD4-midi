@@ -57,11 +57,11 @@ sets slider 1 to CC 9, 2 to 15 etc
 
 * [mi:muz:ch55x Tiny USB MIDI Library for Ch55xduino](https://github.com/mimuz/mimuz-ch55x)
 * [python-rtmidi](http://pypi.python.org/pypi/python-rtmidi/)
-* [midiutil]https://github.com/sourcebox/midiutil)
+* [midiutil](https://github.com/sourcebox/midiutil)
 
 # License
 
-![OpenSourceLicense](https://github.com/push-n-turn-midi61/OpenSourceLicense.png)
+![OpenSourceLicense](https://github.com/concept-code-design/FAD4-midi/OpenSourceLicense.png)
 
 Concept & Code invests time and resources providing this open source design, please support them and open-source hardware by purchasing products from Etsy or Tindie!
 
