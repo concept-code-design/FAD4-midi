@@ -3,7 +3,7 @@
 // Version:   v1.0
 // Year:      2025
 // Author:    Ronald Leenes
-// Github:    https://github.com/
+// Github:    https://github.com/concept-code-design/FAD4-midi
 // License:   http://creativecommons.org/licenses/by-sa/3.0/
 // ===================================================================================
 //
@@ -22,7 +22,6 @@ void PROGBOOT_now();
 
 // hardware
 #define INSTRUMENT_TYPE 40 // this is a Fad4
-#define MIDICHANNEL   5
 #define FW_VERSION    10
 
 __xdata const uint8_t faderPin[] = {11, 14, 15, 32};
@@ -30,7 +29,7 @@ __xdata uint8_t previousValue[] = {0,0,0,0};
 __xdata uint8_t sensorValue = 0;
 __xdata uint8_t MIDI_CHANNEL = 10;
 __xdata uint8_t CC[4];//3, 9, 14, 15};
-__xdata const uint8_t hyst = 3; //hysteresis
+__xdata const uint8_t hyst = 2; //hysteresis
 #define PLAY_MODE 0
 #define PROG_MODE 1
 #define PROG_DONE 2
@@ -54,12 +53,10 @@ void setup() {
 void loop() {
   for (int i = 0 ; i < 4; i++) {
     sensorValue = analogRead(faderPin[i]);
-    sensorValue = analogRead(faderPin[i]); // do it again in case port needs to settle //map(analogRead(fader[i]), 0, 255, 0, 127);
     if ((sensorValue > (previousValue[i] + hyst)) || (sensorValue < (previousValue[i] - hyst))){
-      sendCtlChange(MIDI_CHANNEL, CC[i], sensorValue); 
+      sendCtlChange(MIDI_CHANNEL - 1, CC[i], sensorValue); 
       previousValue[i] = sensorValue;
     }
-//    delay(20);
   }
     processMidiMessage();
 }
@@ -89,13 +86,7 @@ void onCTLChange(uint8_t ch, uint8_t note, uint8_t vel) {
   vel =  getVel();
   type = note / 10;       // type ranges from 1 – note, 2 - CC_TOGGLE, 3 - CC_MOMENTARY, 4 - ENCODER
   key = (note % 10) - 1;  // we number keys from 1..7 (1..6 are keys, 7 is the encoder) 
-
-   if (currentMode == PROG_MODE) {
-        // handle regular keys
-    if ((note > 0) && (note < 4)) CC[note-1] = vel;
-   }
-
-  if ((ch == 10) && (note == 102)) {
+if ((ch == 10) && (note == 102)) {
     if (vel > 127)sendNoteOn(3, note, vel);
     switch (vel){
       case 42:
@@ -116,9 +107,8 @@ void onCTLChange(uint8_t ch, uint8_t note, uint8_t vel) {
       case 46:                    // return current config
         for (int i = 0; i < 4; i++) sendCtlChange(10, i+1, CC[i]);
          break;
-
       case 48:                // return MIDI channel
-        sendCtlChange(10, 106, MIDICHANNEL);
+        sendCtlChange(10, 106, MIDI_CHANNEL);
         break;
       case 49: // reboot in prog mode                            // update pixels
         PROGBOOT_now();     // jump to bootloader
@@ -127,4 +117,12 @@ void onCTLChange(uint8_t ch, uint8_t note, uint8_t vel) {
         break;
     }
   }
+ 
+  if (currentMode == PROG_MODE) {
+        // handle regular keys
+      if ((note > 0) && (note < 4)) CC[note-1] = vel;
+        if (note == 5) {
+          if ((vel > 0) && (vel < 16))  MIDI_CHANNEL = vel; else MIDI_CHANNEL = 1;
+        }
+  } 
 }

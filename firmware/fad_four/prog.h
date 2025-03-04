@@ -20,10 +20,9 @@ show configuration
 ./midiutil.py -d 1 -w 186 102 46
 returns the config of each of the 4 sliders
 
-
-set MIDI channel 
+show midichannel
 ./midiutil.py -d 1 -w 186 102 48
-returns (10, 106, MIDIChannel)
+returns (10, 106, midichannel)
 
 reboot in firmware update mode
 ./midiutil.py -d 1 -w 186 102 49
@@ -36,6 +35,11 @@ programming sliders
 ./midiutil.py -d 1 -w 186 4 22
 ./midiutil.py -d 1 -w 186 102 43
 sets slider 1 to CC 9, 2 to 15 etc
+
+programming midi channel
+./midiutil.py -d 1 -w 186 102 42
+./midiutil.py -d 1 -w 186 5 midichannel //in [1..15]
+./midiutil.py -d 1 -w 186 102 43
 
 
 
