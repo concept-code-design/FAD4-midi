@@ -61,7 +61,7 @@ sets slider 1 to CC 9, 2 to 15 etc
 
 # License
 
-![OpenSourceLicense](https://github.com/concept-code-design/FAD4-midi/OpenSourceLicense.png)
+![OpenSourceLicense](https://github.com/concept-code-design/FAD4-midi/blob/main/OpenSourceLicense.png)
 
 Concept & Code invests time and resources providing this open source design, please support them and open-source hardware by purchasing products from Etsy or Tindie!
 
