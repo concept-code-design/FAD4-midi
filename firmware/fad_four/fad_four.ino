@@ -22,13 +22,13 @@ void PROGBOOT_now();
 
 // hardware
 #define INSTRUMENT_TYPE 40 // this is a Fad4
-#define FW_VERSION    10
+#define FW_VERSION      10 // version 1.0
 
 __xdata const uint8_t faderPin[] = {11, 14, 15, 32};
 __xdata uint8_t previousValue[] = {0,0,0,0};
 __xdata uint8_t sensorValue = 0;
-__xdata uint8_t MIDI_CHANNEL = 10;
-__xdata uint8_t CC[4];//3, 9, 14, 15};
+__xdata uint8_t MIDI_CHANNEL = 10;  // defaults to channel 10
+__xdata uint8_t CC[4];
 __xdata const uint8_t hyst = 2; //hysteresis
 #define PLAY_MODE 0
 #define PROG_MODE 1
@@ -70,23 +70,20 @@ void readEEPROM(){
 
 void writeEEPROM(){
   eeprom_write_byte(0, MIDI_CHANNEL);
-  delay(50);
   for (int i = 0; i < 4; i++) {
     eeprom_write_byte(1+i, CC[i]);
-    delay(50);
   }
 }
 
 void onCTLChange(uint8_t ch, uint8_t note, uint8_t vel) {
   __xdata uint8_t type = 0;
   __xdata uint8_t key = 0;
-   
   ch = getChannel();
   note = getNote();
   vel =  getVel();
-  type = note / 10;       // type ranges from 1 – note, 2 - CC_TOGGLE, 3 - CC_MOMENTARY, 4 - ENCODER
+  type = note / 10;       
   key = (note % 10) - 1;  // we number keys from 1..7 (1..6 are keys, 7 is the encoder) 
-if ((ch == 10) && (note == 102)) {
+  if ((ch == 10) && (note == 102)) {
     if (vel > 127)sendNoteOn(3, note, vel);
     switch (vel){
       case 42:
@@ -96,6 +93,7 @@ if ((ch == 10) && (note == 102)) {
       case 43:
           //currentMode = PROG_DONE;  //configuration done
           writeEEPROM();
+          sendCtlChange(10, 102, 43);
           currentMode = PLAY_MODE;
           break;
       case 44:                    // return instrument tyoe
@@ -120,7 +118,7 @@ if ((ch == 10) && (note == 102)) {
  
   if (currentMode == PROG_MODE) {
         // handle regular keys
-      if ((note > 0) && (note < 4)) CC[note-1] = vel;
+      if ((note > 0) && (note < 5)) CC[note-1] = vel;
         if (note == 5) {
           if ((vel > 0) && (vel < 16))  MIDI_CHANNEL = vel; else MIDI_CHANNEL = 1;
         }

@@ -38,9 +38,9 @@ sets slider 1 to CC 9, 2 to 15 etc
 
 programming midi channel
 ./midiutil.py -d 1 -w 186 102 42
-./midiutil.py -d 1 -w 186 5 midichannel //in [1..15]
+./midiutil.py -d 1 -w 186 5 
 ./midiutil.py -d 1 -w 186 102 43
-
+midichannel //in [1..15]
 
 
 
