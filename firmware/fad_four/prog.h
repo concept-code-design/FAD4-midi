@@ -1,5 +1,45 @@
 /* programming documentation
 
+// ===================================================================================
+// Project:   Fader four (Fad4)
+// Version:   v1.0
+// Year:      2025
+// Author:    Ronald Leenes, ronaldleenes@icloud.com
+// Github:    https://github.com/concept-code-design/FAD4-midi
+// License:   http://creativecommons.org/licenses/by-sa/3.0/
+// ===================================================================================
+
+# Requirements
+
+- Python 3.3 or later
+- [python-rtmidi](http://pypi.python.org/pypi/python-rtmidi/)
+
+midiutil was mainly developed and tested on Linux and macOS but should also work on Windows.
+Installing a midiviewer, such as https://hautetechnique.com/midi/midiview/ helps as well as it will show midi in and out traffic.
+
+## Quick Start
+
+    midiutil.py -h
+
+Shows available options.
+
+    midiutil.py -l
+
+Lists available MIDI devices, separated by inputs and outputs.
+Each device has an ID which has to be used to select the device
+when transmitting data.
+
+Instead of a numerical ID, you can use the case-insensitive device name or a part of it.
+
+### Sending MIDI data
+
+    midiutil.py -d ID -w DATA [DATA ...]
+
+Sends data to a device.
+ The following assumes your fad4 shows up as device 1 in 
+ ./midiutil -l
+
+
 start prog
 ./midiutil.py -d 1 -w 186 102 42
 returns [185, 102, 42]
