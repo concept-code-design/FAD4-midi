@@ -54,7 +54,7 @@ void loop() {
   for (int i = 0 ; i < 4; i++) {
     sensorValue = analogRead(faderPin[i]);
     if ((sensorValue > (previousValue[i] + hyst)) || (sensorValue < (previousValue[i] - hyst))){
-      sendCtlChange(MIDI_CHANNEL - 1, CC[i], sensorValue); 
+      sendCtlChange(2 , CC[i], sensorValue); //MIDI_CHANNEL - 1
       previousValue[i] = sensorValue;
     }
   }
